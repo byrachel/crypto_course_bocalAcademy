@@ -1,27 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  login: "",
-  password: "",
-  isLogged: false,
+  token: null,
+  user: null,
+  cryptoWallet: [],
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    connexion(state, action) {
-      state.login = action.payload.login;
-      state.password = action.payload.password;
-      state.isLogged = true;
+    setToken(state, action) {
+      state.token = action.payload;
+    },
+    setUser(state, action) {
+      state.user = action.payload;
     },
     logout(state) {
-      state.login = "";
-      state.password = "";
-      state.isLogged = false;
+      state.token = null;
+      state.user = null;
+    },
+    setCryptoWallet(state, action) {
+      state.cryptoWallet = [...state.cryptoWallet, action.payload];
+    },
+    removeCryptoWallet(state, action) {
+      state.cryptoWallet = state.cryptoWallet.filter(
+        (wallet) => wallet.adress !== action.payload
+      );
     },
   },
 });
 
-export const { connexion, logout } = userSlice.actions;
+export const {
+  setToken,
+  setUser,
+  logout,
+  setCryptoWallet,
+  removeCryptoWallet,
+} = userSlice.actions;
 export default userSlice.reducer;

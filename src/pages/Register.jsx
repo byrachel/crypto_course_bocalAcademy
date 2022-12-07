@@ -38,6 +38,7 @@ export default function Register() {
         color="default"
         labelPlaceholder="Prénom"
         onChange={(e) => setFirstname(e.target.value)}
+        fullWidth
       />
       <Spacer y={1} />
       <Input
@@ -46,6 +47,7 @@ export default function Register() {
         color="default"
         labelPlaceholder="Nom"
         onChange={(e) => setLastname(e.target.value)}
+        fullWidth
       />
       <Spacer y={1} />
       <Input
@@ -54,6 +56,7 @@ export default function Register() {
         color="default"
         labelPlaceholder="e-mail"
         onChange={(e) => setEmail(e.target.value)}
+        fullWidth
       />
       <Spacer y={1} />
       <Input
@@ -62,6 +65,7 @@ export default function Register() {
         color="default"
         labelPlaceholder="Mot de passe"
         onChange={(e) => setPassword(e.target.value)}
+        fullWidth
       />
       <Spacer y={1} />
       <Button type="submit" onPress={onSubmit}>
