@@ -1,23 +1,15 @@
-import { useState } from "react";
-import { Button, Spacer, Input } from "@nextui-org/react";
-import { useDispatch } from "react-redux";
-import { setCryptoWallet } from "../../store/userSlice";
+import { Button, Spacer, Input, Grid } from "@nextui-org/react";
 
-export default function AddWallet({ setAddWallet }) {
-  const dispatch = useDispatch();
-  const [newWallet, setNewWallet] = useState(null);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (newWallet) {
-      dispatch(setCryptoWallet(newWallet));
-      setAddWallet();
-    }
-  };
-
+export default function AddWallet({
+  newWallet,
+  setNewWallet,
+  onSubmit,
+  maxLengthInput,
+  setAddWallet,
+}) {
+  const adressLength = 12;
   return (
     <form onSubmit={onSubmit}>
-      <h3>Ajouter un wallet :</h3>
       <Spacer y={1} />
       <Input
         type="text"
@@ -27,6 +19,7 @@ export default function AddWallet({ setAddWallet }) {
         aria-label="nom"
         onChange={(e) => setNewWallet({ ...newWallet, name: e.target.value })}
         fullWidth
+        id="nom"
       />
       <Spacer y={1} />
       <Input
@@ -35,8 +28,10 @@ export default function AddWallet({ setAddWallet }) {
         color="default"
         placeholder="Adresse"
         aria-label="adresse"
-        onChange={(e) => setNewWallet({ ...newWallet, adress: e.target.value })}
+        onChange={(e) => maxLengthInput(e.target.value, adressLength)}
         fullWidth
+        value={newWallet && newWallet.adress ? newWallet.adress : ""}
+        maxLength={adressLength}
       />
       <Spacer y={1} />
       <Input
@@ -59,7 +54,16 @@ export default function AddWallet({ setAddWallet }) {
         fullWidth
       />
       <Spacer y={1} />
-      <Button type="submit">Enregistrer</Button>
+      <Grid.Container gap={1}>
+        <Grid>
+          <Button type="button" bordered onPress={() => setAddWallet()}>
+            Annuler
+          </Button>
+        </Grid>
+        <Grid>
+          <Button type="submit">Enregistrer</Button>
+        </Grid>
+      </Grid.Container>
     </form>
   );
 }

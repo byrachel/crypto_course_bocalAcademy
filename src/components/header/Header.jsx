@@ -19,7 +19,7 @@ export default function Header() {
             Logout
           </Button>
         ) : location.pathname === "/login" ? (
-          <Button color="gradient" onPress={() => navigate("/")}>
+          <Button color="gradient" onPress={() => navigate("/register")}>
             Créer un compte
           </Button>
         ) : (

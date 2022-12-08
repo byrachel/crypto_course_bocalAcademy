@@ -3,7 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   token: null,
   user: null,
-  cryptoWallet: [],
+  cryptoWallet: [
+    {
+      name: "welcome gift",
+      amount: 10,
+      devise: "bocal coin",
+      adress: "<helloworld />",
+    },
+  ],
 };
 
 const userSlice = createSlice({
@@ -23,6 +30,11 @@ const userSlice = createSlice({
     setCryptoWallet(state, action) {
       state.cryptoWallet = [...state.cryptoWallet, action.payload];
     },
+    updateCryptoWallet(state, action) {
+      state.cryptoWallet = state.cryptoWallet.map((wallet) =>
+        wallet.adress === action.payload.adress ? action.payload : wallet
+      );
+    },
     removeCryptoWallet(state, action) {
       state.cryptoWallet = state.cryptoWallet.filter(
         (wallet) => wallet.adress !== action.payload
@@ -37,5 +49,6 @@ export const {
   logout,
   setCryptoWallet,
   removeCryptoWallet,
+  updateCryptoWallet,
 } = userSlice.actions;
 export default userSlice.reducer;
