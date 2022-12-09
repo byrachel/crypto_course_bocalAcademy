@@ -3,7 +3,7 @@ import { updateCryptoWallet } from "../store/userSlice";
 
 const withWallet = (WrappedComponent) => {
   return function (props) {
-    // const isLogged = useSelector((state) => state.user.token);
+    const isLogged = useSelector((state) => state.user.token);
     const cryptoWallet = useSelector((state) => state.user.cryptoWallet);
     const dispatch = useDispatch();
 
@@ -19,20 +19,17 @@ const withWallet = (WrappedComponent) => {
       }
     };
 
-    // return isLogged ? (
-    //   <WrappedComponent cryptoWallet={cryptoWallet} {...props} />
-    // ) : (
-    //   <div>
-    //     <p>You are not Logged In !</p>
-    //   </div>
-    // );
-    return (
+    return isLogged ? (
       <WrappedComponent
         cryptoWallet={cryptoWallet}
         buyCrypto={buyCrypto}
         sellCrypto={sellCrypto}
         {...props}
       />
+    ) : (
+      <div>
+        <p>You are not Logged In !</p>
+      </div>
     );
   };
 };

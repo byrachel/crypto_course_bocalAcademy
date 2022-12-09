@@ -1,31 +1,38 @@
-import { useState } from "react";
-import { Button, Grid, Input, Spacer } from "@nextui-org/react";
+import { useRef, useEffect, useState } from "react";
+import { Button, Grid, Input } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import { setToken } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const inputRef = useRef();
+  const [majMail, setMajMail] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: email,
-      password: password,
-    }),
-  };
+  useEffect(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [inputRef]);
 
-  const onSubmit = async () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const password = e.target.password.value;
+    const email = e.target.email.value;
     if (password && email) {
       const response = await fetch(
         "https://social-network-api.osc-fr1.scalingo.io/crypto-community/login",
-        options
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        }
       );
       const data = await response.json();
       dispatch(setToken(data.token));
@@ -33,17 +40,26 @@ export default function Login() {
     }
   };
 
+  const convertMaj = () => {
+    if (inputRef) {
+      const maj = inputRef.current.value.toUpperCase();
+      setMajMail(maj);
+    }
+  };
+
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <Grid.Container gap={2} justify="center">
         <Grid>
           <Input
+            ref={inputRef}
             type="text"
             bordered
             color="default"
             placeholder="Identifiant (e-mail)"
             aria-label="e-mail"
-            onChange={(e) => setEmail(e.target.value)}
+            id="email"
+            value={majMail}
           />
         </Grid>
         <Grid>
@@ -52,15 +68,16 @@ export default function Login() {
             color="default"
             placeholder="Mot de passe"
             aria-label="mot de passe"
-            onChange={(e) => setPassword(e.target.value)}
+            id="password"
           />
         </Grid>
         <Grid>
-          <Button type="button" bordered color="primary" onPress={onSubmit}>
+          <Button type="submit" bordered color="primary">
             Se connecter
           </Button>
         </Grid>
       </Grid.Container>
-    </>
+      <button onClick={convertMaj}>maj</button>
+    </form>
   );
 }
